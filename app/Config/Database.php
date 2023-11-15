@@ -26,10 +26,10 @@ class Database extends Config
      */
     public array $default = [
         'DSN'          => '',
-        'hostname'     => 'localhost',
-        'username'     => '',
-        'password'     => '',
-        'database'     => '',
+        'hostname'     => '185.239.210.103',
+        'username'     => 'u110519718_bluepex',
+        'password'     => 'WSshn9ld|8a',
+        'database'     => 'u110519718_bluepex',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
