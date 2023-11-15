@@ -3,16 +3,13 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\Data as ModelsData;
 
 class Data extends BaseController
 {
     public function index()
     {
-        /**
-         * get CPU data
-         * get memory data
-         * get disk data
-         * get SO data
-         */
+        $dataModel = model(ModelsData::class);
+        return $this->response->setJSON($dataModel->getData());
     }
 }
