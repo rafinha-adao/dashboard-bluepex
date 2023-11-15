@@ -44,31 +44,63 @@ class User extends Model
 
     public function getAll()
     {
-        //
+        $users = model(User::class)->findAll();
+
+        return $users;
     }
 
-    public function getById()
+    public function getById($id)
     {
-        //
+        $user = model(User::class)->where('id', $id)->first();
+
+        return $user;
     }
 
-    public function updateById()
+    public function addNew($data)
     {
-        //
+        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        $user = model(User::class)->insert($data);
+
+        return $user;
     }
 
-    public function deleteById()
+    public function updateById($id, $data)
     {
-        //
+        $user = $this->getById($id);
+        $user->update($id, $data);
+
+        return $user;
     }
 
-    public function login()
+    public function deleteById($id)
     {
-        //
+        $user = model(User::class)->delete($id);
+
+        return $user;
+    }
+
+    public function login($data)
+    {
+        $user = model(User::class)->where('email', $data['email'])->first();
+
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'E-mail ou senha incorretos');
+        }
+
+        if (!password_verify($data['password'], $user['password'])) {
+            return redirect()->route('login')->with('error', 'E-mail ou senha incorretos');
+        }
+
+        unset($user['password'], $user['created_at'], $user['updated_at']);
+        session()->set('user', $user);
+
+        return redirect()->route('/');
     }
 
     public function logout()
     {
-        //
+        session()->destroy();
+
+        return redirect()->route('login');
     }
 }

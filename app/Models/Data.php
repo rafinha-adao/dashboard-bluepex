@@ -17,10 +17,10 @@ class Data extends Model
 
          // test json data
         $data = [
-            'CPU' => 'CPU DATA',
-            'MEMORY' => 'MEMORY DATA',
-            'DISK' => 'DISK DATA',
-            'SO' => 'SO DATA'
+            'CPU'       => 'CPU DATA',
+            'MEMORY'    => 'MEMORY DATA',
+            'DISK'      => 'DISK DATA',
+            'SO'        => 'SO DATA'
         ];
 
         return $data;
