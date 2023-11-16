@@ -49,8 +49,8 @@
 
 <style>
     canvas {
-        max-width: 300px;
-        max-height: 300px;
+        max-width: 250px;
+        max-height: 250px;
         margin-inline: auto;
     }
 </style>
