@@ -36,6 +36,19 @@ class User extends BaseController
 
     public function store()
     {
+        $rules = [
+            'name'              => 'required|max_length[100]',
+            'email'             => 'required|valid_email|max_length[100]',
+            'password'          => 'required|max_length[255]',
+            'confirm_password'  => 'required|max_length[255]|matches[password]',
+        ];
+
+        $validated = $this->validate($rules);
+
+        if (!$validated) {
+            return redirect()->back()->with('errors', $this->validator->getErrors());
+        }
+
         $data = $this->request->getPost(['name', 'email', 'password']);
 
         $user = model(ModelsUser::class)->addNew($data);
@@ -66,7 +79,26 @@ class User extends BaseController
 
     public function update($id)
     {
+        $rules = [
+            'name'              => 'required|max_length[100]',
+            'email'             => 'required|valid_email|max_length[100]',
+            'password'          => 'max_length[255]',
+            'confirm_password'  => 'max_length[255]|matches[password]',
+        ];
+
+        $validated = $this->validate($rules);
+
+        if (!$validated) {
+            return redirect()->back()->with('errors', $this->validator->getErrors());
+        }
+
         $data = $this->request->getPost(['name', 'email', 'password']);
+
+        if (!$data['password']) {
+            unset($data['password']);
+        } else {
+            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        }
 
         $user = model(ModelsUser::class)->updateById($id, $data);
 

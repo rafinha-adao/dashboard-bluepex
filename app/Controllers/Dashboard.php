@@ -12,7 +12,7 @@ class Dashboard extends BaseController
             return redirect()->route('login');
         }
 
-        $data['title'] = "Dashboard";
+        $data['title'] = "Início";
         return view("data", $data);
     }
 

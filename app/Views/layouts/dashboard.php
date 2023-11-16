@@ -61,14 +61,16 @@
         <main class="col-lg-10 px-md-4">
 
             <?php if (session()->has('success')) : ?>
-                <div class="alert alert-success mt-4">
+                <div class="alert alert-success mt-4 alert-dismissible fade show" role="alert">
                     <?= session('success') ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             <?php endif; ?>
 
             <?php if (session()->has('error')) : ?>
-                <div class="alert alert-danger mt-4">
+                <div class="alert alert-danger mt-4 alert-dismissible fade show" role="alert">
                     <?= session('error') ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             <?php endif; ?>
 

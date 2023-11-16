@@ -11,12 +11,12 @@ $routes->add('(:any)', 'Dashboard::catchAll');
 $routes->get('/data', 'Data::index');
 
 $routes->get('/login', 'Login::index');
-$routes->post('/login', 'Login::store');
 $routes->get('/logout', 'Login::destroy');
+$routes->post('/login', 'Login::store', ['filter' => 'csrf']);
 
 $routes->get('/users', 'User::index');
 $routes->get('/users/add', 'User::create');
-$routes->post('/users', 'User::store');
 $routes->get('/users/(:num)/edit', 'User::edit/$1');
-$routes->put('/users/(:num)', 'User::update/$1');
-$routes->delete('/users/(:num)', 'User::destroy/$1');
+$routes->post('/users', 'User::store', ['filter' => 'csrf']);
+$routes->put('/users/(:num)', 'User::update/$1', ['filter' => 'csrf']);
+$routes->delete('/users/(:num)', 'User::destroy/$1', ['filter' => 'csrf']);

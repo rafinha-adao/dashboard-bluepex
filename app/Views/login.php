@@ -4,9 +4,18 @@
 
 <section class="container-fluid d-flex flex-column align-items-center justify-content-center min-vh-100">
     <main class="card p-4 col-md-6 col-lg-4 col-12">
+
+        <?php if (session()->has('error')) : ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= session('error') ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+
         <h1 class="h4">Faça seu login</h1>
+
         <hr class="mb-4">
-        <form action="/login" method="post">
+        <form action="/login" method="POST">
             <?= csrf_field() ?>
             <div class="mb-3">
                 <label for="inputEmail" class="form-label">E-mail</label>

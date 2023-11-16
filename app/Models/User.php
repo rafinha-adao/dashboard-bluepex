@@ -66,8 +66,7 @@ class User extends Model
 
     public function updateById($id, $data)
     {
-        $user = $this->getById($id);
-        $user->update($id, $data);
+        $user = model(User::class)->update($id, $data);
 
         return $user;
     }
@@ -83,12 +82,8 @@ class User extends Model
     {
         $user = model(User::class)->where('email', $data['email'])->first();
 
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'E-mail ou senha incorretos');
-        }
-
         if (!password_verify($data['password'], $user['password'])) {
-            return redirect()->route('login')->with('error', 'E-mail ou senha incorretos');
+            return redirect()->route('login')->with('error', 'E-mail ou senha incorretos.');
         }
 
         unset($user['password'], $user['created_at'], $user['updated_at']);

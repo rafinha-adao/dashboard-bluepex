@@ -2,17 +2,19 @@
 
 <?= $this->section('dashboard_content') ?>
 
-<form action="<?= isset($id) ? '/users/' . $id : '/users' ?>" method="post" autocomplete="off">
+<form action="<?= isset($id) ? '/users/' . $id : '/users' ?>" method="POST" autocomplete="off">
 
     <?= csrf_field() ?>
 
     <?php if (isset($id)) : ?>
-        <input type="hidden" _method="put">
+        <input type="hidden" name="_method" value="PUT">
     <?php endif; ?>
 
     <div class="row mb-3">
         <div class="col-sm-6">
-            <label for="inputName" class="form-label">Insira um nome</label>
+            <label for="inputName" class="form-label">
+                <?= isset($id) ? "Seu nome" : "Insira um nome" ?>
+            </label>
             <input type="text" name="name" class="form-control" id="inputName" placeholder="Ex: Rafael de Oliveira" value="<?= isset($user['name']) ? $user['name'] : null ?>">
             <?php if (session()->get('errors') && isset(session('errors')['name'])) : ?>
                 <p class="text-danger">
@@ -21,7 +23,9 @@
             <?php endif; ?>
         </div>
         <div class="col-sm-6">
-            <label for="inputEmail" class="form-label">Insira um e-mail</label>
+            <label for="inputEmail" class="form-label">
+                <?= isset($id) ? "Seu e-mail" : "Insira um e-mail" ?>
+            </label>
             <input type="text" name="email" class="form-control" id="inputEmail" placeholder="exemplo@email.com" value="<?= isset($user['email']) ? $user['email'] : null ?>">
             <?php if (session()->get('errors') && isset(session('errors')['email'])) : ?>
                 <p class="text-danger">
@@ -40,6 +44,18 @@
             <?php if (session()->get('errors') && isset(session('errors')['password'])) : ?>
                 <p class="text-danger">
                     <?= session('errors')['password'] ?>
+                </p>
+            <?php endif; ?>
+        </div>
+        <div class="col-sm-6">
+            <label for="inputConfirmPassword" class="form-label">
+                Confirmar
+                <?= isset($id) ? " nova senha" : " senha" ?>
+            </label>
+            <input type="password" name="confirm_password" class="form-control" id="inputConfirmPassword" placeholder="••••••••••">
+            <?php if (session()->get('errors') && isset(session('errors')['confirm_password'])) : ?>
+                <p class="text-danger">
+                    <?= session('errors')['confirm_password'] ?>
                 </p>
             <?php endif; ?>
         </div>
