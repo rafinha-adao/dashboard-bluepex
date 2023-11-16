@@ -1,5 +1,5 @@
-<?= $this->extend('layouts/master') ?>
+<?= $this->extend('layouts/dashboard') ?>
 
-<?= $this->section('content') ?>
+<?= $this->section('dashboard_content') ?>
 <h1><?= $title ?></h1>
-<?= $this->endSection('content') ?>
+<?= $this->endSection('dashboard_content') ?>

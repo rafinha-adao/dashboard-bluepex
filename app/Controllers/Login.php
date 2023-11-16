@@ -19,6 +19,17 @@ class Login extends BaseController
 
     public function store()
     {
+        $rules = [
+            'email'     => 'required|valid_email|max_length[100]',
+            'password'  => 'required|max_length[255]',
+        ];
+
+        $validated = $this->validate($rules);
+
+        if (!$validated) {
+            return redirect()->route('login')->with('errors', $this->validator->getErrors());
+        }
+
         $data = $this->request->getPost(['email', 'password']);
 
         $user = model(User::class);

@@ -19,4 +19,4 @@ $routes->get('/users/add', 'User::create');
 $routes->post('/users', 'User::store');
 $routes->get('/users/(:num)/edit', 'User::edit/$1');
 $routes->put('/users/(:num)', 'User::update/$1');
-$routes->delete('/users/(:num)', 'User::destoy/$1');
+$routes->delete('/users/(:num)', 'User::destroy/$1');

@@ -51,7 +51,7 @@ class User extends Model
 
     public function getById($id)
     {
-        $user = model(User::class)->where('id', $id)->first();
+        $user = model(User::class)->select('name, email')->where('id', $id)->first();
 
         return $user;
     }
