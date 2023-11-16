@@ -15,12 +15,23 @@ class Data extends Model
          * get SO data
          */
 
-         // test json data
+        exec("top -bn1 | grep 'Cpu(s)' | sed 's/.*, *\\([0-9.]*\\)%* id.*/\\1/' | awk '{print 100 - $1\"%\"}'", $cpuUsage);
+        $cpuUsage = implode('', $cpuUsage);
+
+        exec("free -m | awk '/Mem:/ {print $3\"MB / \"$2\"MB\"}'", $memoryUsage);
+        $memoryUsage = implode('', $memoryUsage);
+
+        exec("df -h | awk '/\\/$/ {printf \"%s / %s\", $3, $2}'", $diskUsage);
+        $diskUsage = implode('', $diskUsage);
+
+        exec("lsb_release -a", $osInfo);
+        $osInfo = implode('', $osInfo);
+
         $data = [
-            'CPU'       => 'CPU DATA',
-            'MEMORY'    => 'MEMORY DATA',
-            'DISK'      => 'DISK DATA',
-            'SO'        => 'SO DATA'
+            'CPU'       => $cpuUsage,
+            'MEMORY'    => $memoryUsage,
+            'DISK'      => $diskUsage,
+            'SO'        => $osInfo
         ];
 
         return $data;

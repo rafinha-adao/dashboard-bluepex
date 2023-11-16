@@ -53,8 +53,14 @@ class User extends BaseController
 
         $user = model(ModelsUser::class)->addNew($data);
 
+        $error = model(ModelsUser::class)->db->error();
+
+        if ($error['code'] == 1062) {
+            return redirect()->back()->with('error', 'Erro ao adicionar usuário: e-mail já cadastrado');
+        }
+
         if (!$user) {
-            return redirect()->route('users')->with('error', 'Erro ao adicionar usuário!');
+            return redirect()->back()->with('error', 'Erro ao adicionar usuário: ' . $error['message']);
         }
 
         return redirect()->route('users')->with('success', 'Usuário adicionado com sucesso!');
@@ -102,8 +108,14 @@ class User extends BaseController
 
         $user = model(ModelsUser::class)->updateById($id, $data);
 
+        $error = model(ModelsUser::class)->db->error();
+
+        if ($error['code'] == 1062) {
+            return redirect()->back()->with('error', 'Erro ao atualizar usuário: e-mail já cadastrado');
+        }
+
         if (!$user) {
-            return redirect()->route('users')->with('error', 'Erro ao atualizar usuário!');
+            return redirect()->back()->with('error', 'Erro ao atualizar usuário: ' . $error['message']);
         }
 
         return redirect()->route('users')->with('success', 'Usuário atualizado com sucesso!');
@@ -113,14 +125,16 @@ class User extends BaseController
     {
         $user = model(ModelsUser::class)->deleteById($id);
 
+        $error = model(ModelsUser::class)->db->error();
+
         if (!$user) {
-            return redirect()->route('users')->with('error', 'Erro ao excluir usuário!');
+            return redirect()->back()->with('error', 'Erro ao excluir usuário: ' . $error['message']);
         }
 
         if (session()->get('user')['id'] == $id) {
             model(ModelsUser::class)->logout();
         }
 
-        return redirect()->route('users')->with('success', 'Usuário excluído com sucesso!');
+        return redirect()->back()->with('success', 'Usuário excluído com sucesso!');
     }
 }
