@@ -6,34 +6,125 @@ use CodeIgniter\Model;
 
 class Data extends Model
 {
-    public function getData()
+    /**
+     * linux
+     */
+
+    public function getCpuUsage()
     {
-        /**
-         * get CPU data
-         * get memory data
-         * get disk data
-         * get SO data
-         */
+        exec("top -b -n 1 | grep '%Cpu(s)'", $output);
 
-        exec("top -bn1 | grep 'Cpu(s)' | sed 's/.*, *\\([0-9.]*\\)%* id.*/\\1/' | awk '{print 100 - $1\"%\"}'", $cpuUsage);
-        $cpuUsage = implode('', $cpuUsage);
-
-        exec("free -m | awk '/Mem:/ {print $3\"MB / \"$2\"MB\"}'", $memoryUsage);
-        $memoryUsage = implode('', $memoryUsage);
-
-        exec("df -h | awk '/\\/$/ {printf \"%s / %s\", $3, $2}'", $diskUsage);
-        $diskUsage = implode('', $diskUsage);
-
-        exec("lsb_release -a", $osInfo);
-        $osInfo = implode('', $osInfo);
+        preg_match('/\d+\.\d+/', $output[0], $matches);
 
         $data = [
-            'CPU'       => $cpuUsage,
-            'MEMORY'    => $memoryUsage,
-            'DISK'      => $diskUsage,
-            'SO'        => $osInfo
+            'usage' => floatval($matches[0]),
+            'available' => 100 - floatval($matches[0])
         ];
 
         return $data;
     }
+
+    public function getMemoryUsage()
+    {
+        exec("free -m", $output);
+
+        $values = preg_split('/\s+/', $output[1]);
+
+        $data = [
+            'total' => intval($values[1]),
+            'used' => intval($values[2]),
+            'free' => intval($values[3]),
+            'used_percent' => (floatval($values[2]) / intval($values[1])) * 100
+        ];
+
+        return $data;
+    }
+
+    public function getDiskUsage()
+    {
+        exec("df -h", $output);
+
+        $values = preg_split('/\s+/', $output[1]);
+
+        $data = [
+            'total' => intval($values[1]),
+            'used' => intval($values[2]),
+            'free' => intval($values[3]),
+            'used_percent' => floatval($values[4])
+        ];
+
+        return $data;
+    }
+
+    public function getOS()
+    {
+        exec("uname -a", $output);
+        $data = implode(" ", $output);
+
+        return $data;
+    }
+
+    /**
+     * MacOS
+     */
+    /*
+    public function getCpuUsage()
+    {
+        exec("top -l 1 | grep 'CPU usage'", $output);
+
+        preg_match('/\d+\.\d+/', $output[0], $matches);
+
+        $data = [
+            'usage' => floatval($matches[0]),
+            'available' => 100 - floatval($matches[0])
+        ];
+
+        return $data;
+    }
+
+    public function getMemoryUsage()
+    {
+        exec("top -l 1 -s 0 | grep PhysMem", $output);
+
+        preg_match_all('/\d+/', $output[0], $matches);
+
+        $total = intval($matches[0][0]);
+        $used = intval($matches[0][1]);
+        $free = $total - $used;
+        $used_percent = ($used / $total) * 100;
+
+        $data = [
+            'total' => $total,
+            'used' => $used,
+            'free' => $free,
+            'used_percent' => $used_percent
+        ];
+
+        return $data;
+    }
+
+    public function getDiskUsage()
+    {
+        exec("df -h /", $output);
+
+        $values = preg_split('/\s+/', $output[1]);
+
+        $data = [
+            'total' => intval($values[1]),
+            'used' => intval($values[2]),
+            'free' => intval($values[3]),
+            'used_percent' => floatval($values[4])
+        ];
+
+        return $data;
+    }
+
+    public function getOS()
+    {
+        exec("uname -a", $output);
+        $data = implode(" ", $output);
+
+        return $data;
+    }
+    */
 }

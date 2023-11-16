@@ -14,6 +14,14 @@ class Data extends BaseController
         }
 
         $dataModel = model(DataModel::class);
-        return $this->response->setJSON($dataModel->getData());
+
+        $data = [
+            'cpu'       => $dataModel->getCpuUsage(),
+            'memory'    => $dataModel->getMemoryUsage(),
+            'disk'      => $dataModel->getDiskUsage(),
+            'os'        => $dataModel->getOS()
+        ];
+
+        return $this->response->setJSON($data);
     }
 }
