@@ -82,6 +82,10 @@ class User extends Model
     {
         $user = model(User::class)->where('email', $data['email'])->first();
 
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'E-mail ou senha incorretos.');
+        }
+
         if (!password_verify($data['password'], $user['password'])) {
             return redirect()->route('login')->with('error', 'E-mail ou senha incorretos.');
         }
