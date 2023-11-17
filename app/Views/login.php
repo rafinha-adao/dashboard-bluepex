@@ -2,7 +2,7 @@
 
 <?= $this->section('content') ?>
 
-<section class="container-fluid d-flex flex-column align-items-center justify-content-center min-vh-100">
+<section class="container-fluid d-flex flex-column align-items-center justify-content-center" style="min-height: 100svh">
     <main class="card p-4 col-md-6 col-lg-4 col-12">
 
         <?php if (session()->has('error')) : ?>
